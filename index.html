@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Sunshine 💕</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&family=Poppins:wght@300;400;500&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fff0f5;
+            overflow-x: hidden;
+        }
+        
+        .handwriting {
+            font-family: 'Indie Flower', cursive;
+        }
+        
+        .heart-beat {
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .photo-frame {
+            border: 12px solid white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            background: white;
+        }
+        
+        .cute-button {
+            transition: all 0.3s ease;
+        }
+        
+        .cute-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(255, 105, 180, 0.3);
+        }
+        
+        .message-box {
+            background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%);
+            border-radius: 20px;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.5s ease;
+        }
+        
+        .message-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 8px 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        .pink-text-glow {
+            text-shadow: 0 0 10px rgba(255, 182, 193, 0.7);
+        }
+        
+        /* Bubble animation */
+        .bubble {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        
+        @keyframes float-up {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen relative overflow-hidden">
+    <!-- Floating bubbles background -->
+    <div id="bubbles-container"></div>
+    
+    <!-- Navigation hearts -->
+    <div class="fixed top-0 left-0 right-0 z-50 py-4 px-6 backdrop-blur-sm">
+        <div class="flex justify-between items-center">
+            <a href="#home" class="text-2xl heart-beat" style="color: #ff69b4;">💖</a>
+            <div class="flex space-x-4">
+                <a href="#love" class="px-3 py-1 rounded-full bg-pink-100 text-pink-600 hover:bg-pink-200 transition">Love</a>
+                <a href="#memories" class="px-3 py-1 rounded-full bg-pink-100 text-pink-600 hover:bg-pink-200 transition">Memories</a>
+                <a href="#message" class="px-3 py-1 rounded-full bg-pink-100 text-pink-600 hover:bg-pink-200 transition">Message</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main content -->
+    <div class="container mx-auto px-4 py-20">
+        <!-- Hero section -->
+        <section id="home" class="min-h-screen flex items-center justify-center flex-col text-center py-20">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 text-pink-500 pink-text-glow handwriting">
+                For The Most Beautiful Girl
+            </h1>
+            <div class="relative w-64 h-64 md:w-80 md:h-80 my-8 floating">
+                <div class="absolute inset-0 bg-pink-200 rounded-full opacity-50"></div>
+                <div class="absolute inset-4 bg-pink-300 rounded-full opacity-70"></div>
+                <div class="absolute inset-8 bg-white photo-frame rounded-full overflow-hidden">
+                    <!-- Replace with your photo -->
+                    <img id="your-photo" src="https://images.unsplash.com/photo-1604004555489-723a93f6d53c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="You" class="w-full h-full object-cover">
+                </div>
+            </div>
+            <p class="text-xl md:text-2xl text-pink-600 max-w-2xl mx-auto handwriting">
+                Every moment with you feels like a dream come true...
+            </p>
+            <div class="mt-12 animate-bounce">
+                <a href="#love" class="text-pink-500 text-4xl">↓</a>
+            </div>
+        </section>
+        
+        <!-- Love section -->
+        <section id="love" class="min-h-screen py-20">
+            <h2 class="text-4xl font-bold text-center mb-16 text-pink-600 handwriting">
+                Reasons Why I Love You 💕
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="message-box p-6">
+                    <div class="text-4xl text-pink-600 mb-4">
+                        <i class="fas fa-smile-beam"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2 text-pink-800">Your Beautiful Smile</h3>
+                    <p class="text-pink-700">Just seeing you smile brightens my whole day.</p>
+                </div>
+                
+                <div class="message-box p-6">
+                    <div class="text-4xl text-pink-600 mb-4">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2 text-pink-800">Your Kind Heart</h3>
+                    <p class="text-pink-700">You're the most caring person I've ever known.</p>
+                </div>
+                
+                <div class="message-box p-6">
+                    <div class="text-4xl text-pink-600 mb-4">
+                        <i class="fas fa-laugh-squint"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2 text-pink-800">Your Sense of Humor</h3>
+                    <p class="text-pink-700">You always know how to make me laugh.</p>
+                </div>
+                
+                <div class="message-box p-6">
+                    <div class="text-4xl text-pink-600 mb-4">
+                        <i class="fas fa-hand-holding-heart"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2 text-pink-800">Your Support</h3>
+                    <p class="text-pink-700">You're always there for me when I need you.</p>
+                </div>
+                
+                <div class="message-box p-6">
+                    <div class="text-4xl text-pink-600 mb-4">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2 text-pink-800">Your Uniqueness</h3>
+                    <p class="text-pink-700">There's no one in this world quite like you.</p>
+                </div>
+                
+                <div class="message-box p-6">
+                    <div class="text-4xl text-pink-600 mb-4">
+                        <i class="fas fa-infinity"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-2 text-pink-800">Everything About You</h3>
+                    <p class="text-pink-700">I love every little thing that makes you, you.</p>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <button id="more-reasons" class="cute-button px-8 py-3 bg-pink-500 text-white rounded-full font-semibold hover:bg-pink-600">
+                    Show Me More Reasons <i class="fas fa-heart ml-2"></i>
+                </button>
+            </div>
+        </section>
+        
+        <!-- Memories section -->
+        <section id="memories" class="min-h-screen py-20">
+            <h2 class="text-4xl font-bold text-center mb-16 text-pink-600 handwriting">
+                Our Special Memories ✨
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl message-box">
+                    <div class="h-48 bg-pink-300 overflow-hidden">
+                        <!-- Replace with your memory photo -->
+                        <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Memory 1">
+                    </div>
+                    <div class="p-6">
+                        <div class="text-pink-500 text-xl mb-2">
+                            <i class="fas fa-calendar-heart"></i> First Date
+                        </div>
+                        <p class="text-pink-700">That magical day when our story began. I was so nervous but you made everything feel so right.</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl message-box">
+                    <div class="h-48 bg-pink-300 overflow-hidden">
+                        <!-- Replace with your memory photo -->
+                        <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Memory 2">
+                    </div>
+                    <div class="p-6">
+                        <div class="text-pink-500 text-xl mb-2">
+                            <i class="fas fa-umbrella-beach"></i> Beach Day
+                        </div>
+                        <p class="text-pink-700">Watching the sunset together, your hair blowing in the ocean breeze - pure perfection.</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl message-box">
+                    <div class="h-48 bg-pink-300 overflow-hidden">
+                        <!-- Replace with your memory photo -->
+                        <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1527529420839-02f754af6d52?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Memory 3">
+                    </div>
+                    <div class="p-6">
+                        <div class="text-pink-500 text-xl mb-2">
+                            <i class="fas fa-birthday-cake"></i> Your Birthday
+                        </div>
+                        <p class="text-pink-700">Seeing your face light up when you saw the surprise I planned for you was everything.</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl message-box">
+                    <div class="h-48 bg-pink-300 overflow-hidden">
+                        <!-- Replace with your memory photo -->
+                        <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Memory 4">
+                    </div>
+                    <div class="p-6">
+                        <div class="text-pink-500 text-xl mb-2">
+                            <i class="fas fa-film"></i> Movie Nights
+                        </div>
+                        <p class="text-pink-700">Cuddling up together, your head on my shoulder - it doesn't get better than this.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="relative mt-16 h-32">
+                <div class="absolute left-0 right-0 flex justify-center">
+                    <div class="w-64 h-64 rounded-full bg-pink-200 opacity-40"></div>
+                </div>
+                <div class="absolute left-0 right-0 flex justify-center items-center h-full">
+                    <div class="text-center z-10">
+                        <p class="text-xl md:text-2xl text-pink-600 handwriting">
+                            Every moment with you becomes my favorite memory ❤️
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Message section -->
+        <section id="message" class="min-h-screen py-20 flex items-center justify-center">
+            <div class="max-w-2xl mx-auto text-center">
+                <div class="relative">
+                    <div class="absolute -inset-4 bg-pink-200 rounded-3xl blur opacity-75"></div>
+                    <div class="relative bg-white rounded-2xl p-8 md:p-12 shadow-xl message-box">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-6 text-pink-600 handwriting">
+                            To My Love ❤️
+                        </h2>
+                        
+                        <div class="text-lg md:text-xl text-pink-700 mb-6 text-left handwriting" style="line-height: 1.8;">
+                            <p class="mb-4">My Dearest,</p>
+                            <p class="mb-4">From the moment I met you, I knew there was something special about you. You've brought so much joy, laughter, and love into my life that I can't imagine my world without you in it.</p>
+                            <p class="mb-4">Your smile brightens my darkest days, your laugh is my favorite melody, and your love is the greatest gift I've ever received.</p>
+                            <p class="mb-4">I promise to cherish you, support you, and love you more each day than the day before. You're my everything.</p>
+                            <p>Forever yours,</p>
+                        </div>
+                        
+                        <div class="mt-8">
+                            <div class="inline-block heart-beat text-4xl">
+                                <i class="fas fa-heart text-pink-500"></i>
+                                <i class="fas fa-heart text-pink-500"></i>
+                                <i class="fas fa-heart text-pink-500"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-16">
+                    <button id="secret-button" class="cute-button px-8 py-3 bg-pink-500 text-white rounded-full font-semibold hover:bg-pink-600">
+                        Click for a Sweet Surprise <i class="fas fa-gift ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="py-8 text-center bg-pink-50">
+        <div class="container mx-auto px-4">
+            <p class="text-pink-600">Made with <i class="fas fa-heart text-pink-500 heart-beat"></i> just for you</p>
+            <div class="mt-4 flex justify-center space-x-4">
+                <a href="#" class="text-pink-500 hover:text-pink-700 text-xl"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-pink-500 hover:text-pink-700 text-xl"><i class="fas fa-heart"></i></a>
+                <a href="#" class="text-pink-500 hover:text-pink-700 text-xl"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Floating hearts -->
+    <div id="floating-hearts"></div>
+    
+    <script>
+        // Bubbles effect
+        function createBubbles() {
+            const bubblesContainer = document.getElementById('bubbles-container');
+            const numBubbles = 20;
+            
+            for (let i = 0; i < numBubbles; i++) {
+                const bubble = document.createElement('div');
+                bubble.classList.add('bubble');
+                
+                // Random size between 10 and 40px
+                const size = Math.random() * 30 + 10;
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                
+                // Random position
+                bubble.style.left = `${Math.random() * 100}vw`;
+                bubble.style.top = `${Math.random() * 100}vh`;
+                
+                // Random animation duration between 5 and 15s
+                const duration = Math.random() * 10 + 5;
+                bubble.style.animation = `float-up ${duration}s linear infinite`;
+                
+                // Random delay
+                bubble.style.animationDelay = `${Math.random() * 5}s`;
+                
+                bubblesContainer.appendChild(bubble);
+            }
+        }
+        
+        // Floating hearts effect
+        function createFloatingHearts() {
+            const container = document.getElementById('floating-hearts');
+            const colors = ['#ff9ff3', '#feca57', '#ff6b6b', '#48dbfb', '#1dd1a1'];
+            
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.style.position = 'fixed';
+                heart.style.fontSize = `${Math.random() * 20 + 10}px`;
+                heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+                heart.style.left = `${Math.random() * 100}vw`;
+                heart.style.bottom = '-50px';
+                heart.style.transform = `rotate(${Math.random() * 60 - 30}deg)`;
+                heart.style.zIndex = '0';
+                heart.style.opacity = '0.8';
+                heart.style.animation = `float-up ${Math.random() * 5 + 5}s linear forwards`;
+                
+                container.appendChild(heart);
+                
+                // Remove heart after animation completes
+                setTimeout(() => {
+                    heart.remove();
+                }, 10000);
+            }, 300);
+        }
+        
+        // More reasons button
+        document.getElementById('more-reasons').addEventListener('click', function() {
+            const reasons = [
+                "The way your eyes sparkle when you're happy",
+                "How you always know what to say to make me feel better",
+                "Your intelligence and the way you see the world",
+                "The sound of your voice when you first wake up",
+                "Your strength and resilience in tough times",
+                "The little noises you make when you're concentrating",
+                "How perfectly you fit in my arms when we hug",
+                "Your passion for the things you care about",
+                "The way you bite your lip when you're thinking",
+                "How you make even ordinary moments feel special"
+            ];
+            
+            // Create a sweet alert with random reasons
+            const randomReason = reasons[Math.floor(Math.random() * reasons.length)];
+            
+            const customAlert = document.createElement('div');
+            customAlert.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl shadow-2xl z-50 p-6 max-w-sm w-full mx-4';
+            customAlert.innerHTML = `
+                <div class="text-center">
+                    <div class="text-4xl mb-4 text-pink-500">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 text-pink-600">Another Reason...</h3>
+                    <p class="text-pink-700 mb-4">${randomReason}</p>
+                    <button class="cute-button px-6 py-2 bg-pink-500 text-white rounded-full font-medium hover:bg-pink-600 close-reason">
+                        OK <i class="fas fa-heart ml-1"></i>
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(customAlert);
+            
+            // Add backdrop
+            const backdrop = document.createElement('div');
+            backdrop.className = 'fixed inset-0 bg-black bg-opacity-30 z-40';
+            document.body.appendChild(backdrop);
+            
+            // Close button
+            customAlert.querySelector('.close-reason').addEventListener('click', function() {
+                customAlert.remove();
+                backdrop.remove();
+            });
+        });
+        
+        // Secret message button
+        document.getElementById('secret-button').addEventListener('click', function() {
+            const secretMessages = [
+                "You're the most beautiful girl in the world to me!",
+                "I fall more in love with you every day.",
+                "My favorite place in the world is next to you.",
+                "You make my heart skip a beat every time I see you.",
+                "I'm the luckiest person to have you in my life.",
+                "Your love is the best thing that ever happened to me.",
+                "I can't wait to create more memories with you.",
+                "You're my dream come true.",
+                "I love you more than words can express."
+            ];
+            
+            const randomMessage = secretMessages[Math.floor(Math.random() * secretMessages.length)];
+            
+            // Create a cute popup
+            const popup = document.createElement('div');
+            popup.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-3xl shadow-2xl z-50 p-8 max-w-sm w-full message-box border-4 border-pink-200 animate-bounce';
+            popup.innerHTML = `
+                <div class="text-center">
+                    <div class="text-5xl mb-4 text-pink-500">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <p class="text-pink-600 text-xl handwriting">${randomMessage}</p>
+                    <button class="mt-4 px-5 py-2 bg-pink-500 text-white rounded-full font-medium hover:bg-pink-600 close-popup">
+                        Close <i class="fas fa-times ml-1"></i>
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(popup);
+            
+            // Add backdrop
+            const backdrop = document.createElement('div');
+            backdrop.className = 'fixed inset-0 bg-black bg-opacity-30 z-40';
+            document.body.appendChild(backdrop);
+            
+            // Close button
+            popup.querySelector('.close-popup').addEventListener('click', function() {
+                popup.remove();
+                backdrop.remove();
+            });
+            
+            // Auto close after 5 seconds
+            setTimeout(() => {
+                if (popup.parentNode) {
+                    popup.remove();
+                    backdrop.remove();
+                }
+            }, 5000);
+        });
+        
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Initialize effects when page loads
+        window.addEventListener('DOMContentLoaded', function() {
+            createBubbles();
+            createFloatingHearts();
+            
+            // Replace photo with your actual photo
+            // document.getElementById('your-photo').src = "your-photo.jpg";
+        });
+    </script>
+</body>
+</html>
