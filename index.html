@@ -112,33 +112,74 @@
     <!-- Main content -->
     <div class="container mx-auto px-4 py-20">
         <!-- Hero section -->
-        <section id="home" class="min-h-screen flex items-center justify-center flex-col text-center py-20">
-            <h1 class="text-5xl md:text-7xl font-bold mb-6 text-pink-500 pink-text-glow handwriting">
-                For The Most Beautiful Girl
-            </h1>
-            <div class="relative w-64 h-64 md:w-80 md:h-80 my-8 floating">
-                <div class="absolute inset-0 bg-pink-200 rounded-full opacity-50"></div>
-                <div class="absolute inset-4 bg-pink-300 rounded-full opacity-70"></div>
-                <div class="absolute inset-8 bg-white photo-frame rounded-full overflow-hidden">
-                    <!-- Replace with your photo -->
-                    <img id="your-photo" src="https://images.unsplash.com/photo-1604004555489-723a93f6d53c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="You" class="w-full h-full object-cover">
+        <section id="home" class="py-32 flex items-center justify-center flex-col text-center">
+            <div class="max-w-4xl">
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 text-pink-500 pink-text-glow handwriting">
+                    For The Love of My Life
+                </h1>
+                <div class="relative w-64 h-64 md:w-80 md:h-80 my-8 floating mx-auto">
+                    <div class="absolute inset-0 bg-pink-200 rounded-full opacity-50"></div>
+                    <div class="absolute inset-4 bg-pink-300 rounded-full opacity-70"></div>
+                    <div class="absolute inset-8 bg-white photo-frame rounded-full overflow-hidden">
+                        <img id="your-photo" src="https://images.unsplash.com/photo-1604004555489-723a93f6d53c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="You" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                <p class="text-xl md:text-2xl text-pink-600 max-w-2xl mx-auto handwriting mb-8">
+                    Every moment with you feels like a dream come true...
+                </p>
+                <p class="text-lg text-pink-700 max-w-3xl mx-auto mb-12">
+                    From the first time I saw you, I knew you were special. Your smile brightens my darkest days, and your love gives me strength when I need it most.
+                </p>
+                <div class="mt-8 animate-bounce">
+                    <a href="#love" class="text-pink-500 text-4xl inline-block hover:scale-110 transition transform duration-300">↓</a>
                 </div>
             </div>
-            <p class="text-xl md:text-2xl text-pink-600 max-w-2xl mx-auto handwriting">
-                Every moment with you feels like a dream come true...
-            </p>
-            <div class="mt-12 animate-bounce">
-                <a href="#love" class="text-pink-500 text-4xl">↓</a>
+
+            <div class="mt-24 max-w-5xl w-full">
+                <h2 class="text-3xl text-pink-600 mb-8 handwriting">Our Journey Together</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white bg-opacity-80 rounded-xl p-6 shadow-lg">
+                        <div class="text-4xl text-pink-500 mb-4">
+                            <i class="fas fa-calendar-day"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-pink-700">First Meeting</h3>
+                        <p class="text-pink-600">That magical day when our story began...</p>
+                    </div>
+                    <div class="bg-white bg-opacity-80 rounded-xl p-6 shadow-lg">
+                        <div class="text-4xl text-pink-500 mb-4">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-pink-700">First I Love You</h3>
+                        <p class="text-pink-600">The moment our hearts truly connected...</p>
+                    </div>
+                    <div class="bg-white bg-opacity-80 rounded-xl p-6 shadow-lg">
+                        <div class="text-4xl text-pink-500 mb-4">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 text-pink-700">Special Moments</h3>
+                        <p class="text-pink-600">Countless memories we've created together...</p>
+                    </div>
+                </div>
             </div>
         </section>
         
         <!-- Love section -->
-        <section id="love" class="min-h-screen py-20">
-            <h2 class="text-4xl font-bold text-center mb-16 text-pink-600 handwriting">
-                Reasons Why I Love You 💕
-            </h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <section id="love" class="py-32">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-4xl font-bold text-center mb-16 text-pink-600 handwriting">
+                    Infinite Reasons Why I Love You 💕
+                </h2>
+                
+                <div class="relative mb-16">
+                    <div class="absolute inset-0 bg-pink-100 rounded-full blur-lg opacity-50"></div>
+                    <div class="relative p-8 text-center">
+                        <p class="text-xl md:text-2xl text-pink-700 handwriting">
+                            "To the world you may be one person, but to me you are the world."
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div class="message-box p-6">
                     <div class="text-4xl text-pink-600 mb-4">
                         <i class="fas fa-smile-beam"></i>
@@ -196,7 +237,7 @@
         </section>
         
         <!-- Memories section -->
-        <section id="memories" class="min-h-screen py-20">
+        <section id="memories" class="py-32">
             <h2 class="text-4xl font-bold text-center mb-16 text-pink-600 handwriting">
                 Our Special Memories ✨
             </h2>
@@ -270,7 +311,7 @@
         </section>
         
         <!-- Message section -->
-        <section id="message" class="min-h-screen py-20 flex items-center justify-center">
+        <section id="message" class="py-32">
             <div class="max-w-2xl mx-auto text-center">
                 <div class="relative">
                     <div class="absolute -inset-4 bg-pink-200 rounded-3xl blur opacity-75"></div>
@@ -305,6 +346,38 @@
             </div>
         </section>
     </div>
+    
+    <!-- Future Together Section -->
+    <section id="future" class="py-32 bg-pink-50">
+        <div class="max-w-5xl mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-16 text-pink-600 handwriting">
+                Our Beautiful Future 🌈
+            </h2>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h3 class="text-2xl font-semibold mb-6 text-pink-700">Dreams We'll Share</h3>
+                    <ul class="space-y-4 text-pink-600">
+                        <li class="flex items-start"><i class="fas fa-heart text-pink-500 mt-1 mr-3"></i> Building a home filled with love and laughter</li>
+                        <li class="flex items-start"><i class="fas fa-heart text-pink-500 mt-1 mr-3"></i> Traveling the world hand in hand</li>
+                        <li class="flex items-start"><i class="fas fa-heart text-pink-500 mt-1 mr-3"></i> Growing together through life's adventures</li>
+                        <li class="flex items-start"><i class="fas fa-heart text-pink-500 mt-1 mr-3"></i> Creating traditions that become our legacy</li>
+                        <li class="flex items-start"><i class="fas fa-heart text-pink-500 mt-1 mr-3"></i> Falling more in love with each passing year</li>
+                    </ul>
+                </div>
+                <div class="overflow-hidden rounded-xl shadow-xl">
+                    <img src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" 
+                         alt="Future together" class="w-full h-auto object-cover transform hover:scale-105 transition duration-500">
+                </div>
+            </div>
+            
+            <div class="mt-20 text-center">
+                <p class="text-xl text-pink-600 handwriting max-w-2xl mx-auto">
+                    "I can't wait to experience every sunrise and sunset with you by my side."
+                </p>
+            </div>
+        </div>
+    </section>
     
     <!-- Footer -->
     <footer class="py-8 text-center bg-pink-50">
