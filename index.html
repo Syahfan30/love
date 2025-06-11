@@ -1,17 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Sunshine 💕</title>
+    <title>For My Sunshine 💖</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&family=Poppins:wght@300;400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&family=Poppins:wght@300;600;500&display=swap');
         
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #fff0f5;
+            min-height: 100vh;
+            margin: 0;
             overflow-x: hidden;
         }
         
@@ -24,11 +26,9 @@
         }
         
         @keyframes heartbeat {
-            0% { transform: scale(1); }
-            25% { transform: scale(1.1); }
+            0%, 100% { transform: scale(1); }
+            25%, 75% { transform: scale(1.1); }
             50% { transform: scale(1); }
-            75% { transform: scale(1.1); }
-            100% { transform: scale(1); }
         }
         
         .floating {
@@ -36,9 +36,8 @@
         }
         
         @keyframes floating {
-            0% { transform: translateY(0px); }
+            0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
         }
         
         .photo-frame {
@@ -50,10 +49,12 @@
         
         .cute-button {
             transition: all 0.3s ease;
+            z-index: 10;
+            cursor: pointer;
         }
         
         .cute-button:hover {
-            transform: translateY(-3px);
+            transform: translateY(-3px) scale(1.05);
             box-shadow: 0 6px 12px rgba(255, 105, 180, 0.3);
         }
         
@@ -61,7 +62,8 @@
             background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%);
             border-radius: 20px;
             box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
-            transition: all 0.5s ease;
+            transition: all 0.3s ease;
+            z-index: 2;
         }
         
         .message-box:hover {
@@ -73,314 +75,314 @@
             text-shadow: 0 0 10px rgba(255, 182, 193, 0.7);
         }
         
-        /* Bubble animation */
         .bubble {
-            position: absolute;
-            background-color: rgba(255, 255, 255, 0.6);
+            position: fixed;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.4) 70%);
             border-radius: 50%;
             pointer-events: none;
+            z-index: 0;
         }
         
         @keyframes float-up {
             0% {
                 transform: translateY(0) rotate(0deg);
-                opacity: 1;
+                opacity: 0.8;
             }
             100% {
-                transform: translateY(-100vh) rotate(360deg);
+                transform: translateY(-120vh) rotate(360deg);
                 opacity: 0;
             }
         }
+        
+        #back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        #back-to-top.visible {
+            opacity: 1;
+        }
+        
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff0f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loader-hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 5000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            animation: slideIn 0.3s ease;
+            z-index: 5100;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            cursor: pointer;
+            font-size: 1.5rem;
+            z-index: 5200;
+        }
+
+        .disabled-btn {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        #bubbles-container, #floating-hearts {
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        nav, button, a {
+            z-index: 100;
+        }
     </style>
 </head>
-<body class="min-h-screen relative overflow-hidden">
-    <!-- Floating bubbles background -->
-    <div id="bubbles-container"></div>
-    
-    <!-- Navigation hearts -->
-    <div class="fixed top-0 left-0 right-0 z-50 py-4 px-6 backdrop-blur-sm">
-        <div class="flex justify-between items-center">
-            <a href="#home" class="text-2xl heart-beat" style="color: #ff69b4;">💖</a>
-            <div class="flex space-x-4">
-                <a href="#love" class="px-3 py-1 rounded-full bg-pink-100 text-pink-600 hover:bg-pink-200 transition">Love</a>
-                <a href="#memories" class="px-3 py-1 rounded-full bg-pink-100 text-pink-600 hover:bg-pink-200 transition">Memories</a>
-                <a href="#message" class="px-3 py-1 rounded-full bg-pink-100 text-pink-600 hover:bg-pink-200 transition">Message</a>
-            </div>
+<body class="relative">
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="text-4xl text-pink-500 animate-pulse">
+            <i class="fas fa-heart"></i>
         </div>
     </div>
     
+    <!-- Floating bubbles background -->
+    <div id="bubbles-container" class="fixed inset-0"></div>
+    
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 py-4 px-6 backdrop-blur-md bg-pink-50/80 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#home" class="text-2xl heart-beat nav-link" style="color: #ff69b4;">💖</a>
+            <div class="flex space-x-4">
+                <a href="#love" class="px-4 py-2 rounded-full bg-pink-100 text-pink-600 hover:bg-pink-200 transition-all duration-300 nav-link">Love</a>
+                <a href="#memories" class="px-4 py-2 rounded-full bg-pink-100 text-pink-600 hover:bg-pink-200 transition-all duration-300 nav-link">Memories</a>
+                <a href="#message" class="px-4 py-2 rounded-full bg-pink-100 text-pink-600 hover:bg-pink-200 transition-all duration-300 nav-link">Message</a>
+                <a href="#future" class="px-4 py-2 rounded-full bg-pink-100 text-pink-600 hover:bg-pink-200 transition-all duration-300 nav-link">Future</a>
+            </div>
+        </div>
+    </nav>
+    
     <!-- Main content -->
-    <div class="container mx-auto px-4 py-20">
+    <div class="container mx-auto px-4 pt-24 pb-12">
         <!-- Hero section -->
-        <section id="home" class="py-32 flex items-center justify-center flex-col text-center">
+        <section id="home" class="py-24 flex items-center justify-center flex-col text-center">
             <div class="max-w-4xl">
-                <h1 class="text-5xl md:text-7xl font-bold mb-6 text-pink-500 pink-text-glow handwriting">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 text-pink-500 pink-text-glow handwriting">
                     For The Love of My Life
                 </h1>
                 <div class="relative w-64 h-64 md:w-80 md:h-80 my-8 floating mx-auto">
                     <div class="absolute inset-0 bg-pink-200 rounded-full opacity-50"></div>
                     <div class="absolute inset-4 bg-pink-300 rounded-full opacity-70"></div>
                     <div class="absolute inset-8 bg-white photo-frame rounded-full overflow-hidden">
-                        <img id="your-photo" src="https://images.unsplash.com/photo-1604004555489-723a93f6d53c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="You" class="w-full h-full object-cover">
+                        <img id="your-photo" src="fauzan.jpg" alt="You" class="w-full h-full object-cover" loading="lazy">
                     </div>
                 </div>
-                <p class="text-xl md:text-2xl text-pink-600 max-w-2xl mx-auto handwriting mb-8">
+                <p class="text-lg md:text-xl text-pink-600 max-w-2xl mx-auto handwriting mb-8">
                     Every moment with you feels like a dream come true...
                 </p>
-                <p class="text-lg text-pink-700 max-w-3xl mx-auto mb-12">
+                <p class="text-base md:text-lg text-pink-700 max-w-3xl mx-auto mb-12">
                     From the first time I saw you, I knew you were special. Your smile brightens my darkest days, and your love gives me strength when I need it most.
                 </p>
                 <div class="mt-8 animate-bounce">
-                    <a href="#love" class="text-pink-500 text-4xl inline-block hover:scale-110 transition transform duration-300">↓</a>
+                    <a href="#love" class="text-pink-500 text-4xl inline-block hover:scale-110 transition transform duration-300 nav-link">↓</a>
                 </div>
             </div>
 
-            <div class="mt-24 max-w-5xl w-full">
-                <h2 class="text-3xl text-pink-600 mb-8 handwriting">Our Journey Together</h2>
+            <div class="mt-16 max-w-5xl w-full">
+                <h2 class="text-2xl md:text-3xl text-pink-600 mb-8 handwriting">Our Journey Together</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-white bg-opacity-80 rounded-xl p-6 shadow-lg">
+                    <div class="bg-white bg-opacity-90 rounded-xl p-6 shadow-lg hover:scale-105 transition-transform duration-300">
                         <div class="text-4xl text-pink-500 mb-4">
                             <i class="fas fa-calendar-day"></i>
                         </div>
-                        <h3 class="text-xl font-semibold mb-2 text-pink-700">First Meeting</h3>
-                        <p class="text-pink-600">That magical day when our story began...</p>
+                        <h3 class="text-lg font-semibold mb-2 text-pink-700">First Meeting</h3>
+                        <p class="text-pink-600 text-sm">That magical day when our story began...</p>
                     </div>
-                    <div class="bg-white bg-opacity-80 rounded-xl p-6 shadow-lg">
+                    <div class="bg-white bg-opacity-90 rounded-xl p-6 shadow-lg hover:scale-105 transition-transform duration-300">
                         <div class="text-4xl text-pink-500 mb-4">
                             <i class="fas fa-heart"></i>
                         </div>
-                        <h3 class="text-xl font-semibold mb-2 text-pink-700">First I Love You</h3>
-                        <p class="text-pink-600">The moment our hearts truly connected...</p>
+                        <h3 class="text-lg font-semibold mb-2 text-pink-700">First I Love You</h3>
+                        <p class="text-pink-600 text-sm">The moment our hearts truly connected...</p>
                     </div>
-                    <div class="bg-white bg-opacity-80 rounded-xl p-6 shadow-lg">
+                    <div class="bg-white bg-opacity-90 rounded-xl p-6 shadow-lg hover:scale-105 transition-transform duration-300">
                         <div class="text-4xl text-pink-500 mb-4">
                             <i class="fas fa-star"></i>
                         </div>
-                        <h3 class="text-xl font-semibold mb-2 text-pink-700">Special Moments</h3>
-                        <p class="text-pink-600">Countless memories we've created together...</p>
+                        <h3 class="text-lg font-semibold mb-2 text-pink-700">Special Moments</h3>
+                        <p class="text-pink-600 text-sm">Countless memories we've created together...</p>
                     </div>
                 </div>
             </div>
         </section>
         
         <!-- Love section -->
-        <section id="love" class="py-32">
+        <section id="love" class="py-24 bg-gradient-to-b from-pink-50 to-white">
             <div class="max-w-6xl mx-auto">
-                <h2 class="text-4xl font-bold text-center mb-16 text-pink-600 handwriting">
-                    Infinite Reasons Why I Love You 💕
-                </h2>
+                <div class="flex justify-between items-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-center text-pink-600 handwriting">
+                        Infinite Reasons Why I Love You 💕
+                    </h2>
+                    <button id="add-reason-btn" class="cute-button px-6 py-2 bg-pink-500 text-white rounded-full font-semibold hover:bg-pink-600">
+                        Add Reason <i class="fas fa-plus ml-2"></i>
+                    </button>
+                </div>
                 
-                <div class="relative mb-16">
-                    <div class="absolute inset-0 bg-pink-100 rounded-full blur-lg opacity-50"></div>
-                    <div class="relative p-8 text-center">
-                        <p class="text-xl md:text-2xl text-pink-700 handwriting">
+                <div class="relative mb-12">
+                    <div class="absolute inset-0 bg-pink-100 rounded-full blur-lg opacity-30"></div>
+                    <div class="relative p-6 md:p-8 text-center">
+                        <p class="text-lg md:text-xl text-pink-700 handwriting">
                             "To the world you may be one person, but to me you are the world."
                         </p>
                     </div>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="message-box p-6">
-                    <div class="text-4xl text-pink-600 mb-4">
-                        <i class="fas fa-smile-beam"></i>
-                    </div>
-                    <h3 class="text-2xl font-semibold mb-2 text-pink-800">Your Beautiful Smile</h3>
-                    <p class="text-pink-700">Just seeing you smile brightens my whole day.</p>
+                <div id="reasons-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Reasons will be dynamically added here -->
                 </div>
                 
-                <div class="message-box p-6">
-                    <div class="text-4xl text-pink-600 mb-4">
-                        <i class="fas fa-heart"></i>
-                    </div>
-                    <h3 class="text-2xl font-semibold mb-2 text-pink-800">Your Kind Heart</h3>
-                    <p class="text-pink-700">You're the most caring person I've ever known.</p>
+                <div class="text-center mt-12">
+                    <button id="more-reasons" class="cute-button px-8 py-3 bg-pink-500 text-white rounded-full font-semibold hover:bg-pink-600">
+                        Show Me More Reasons <i class="fas fa-heart ml-2"></i>
+                    </button>
                 </div>
-                
-                <div class="message-box p-6">
-                    <div class="text-4xl text-pink-600 mb-4">
-                        <i class="fas fa-laugh-squint"></i>
-                    </div>
-                    <h3 class="text-2xl font-semibold mb-2 text-pink-800">Your Sense of Humor</h3>
-                    <p class="text-pink-700">You always know how to make me laugh.</p>
-                </div>
-                
-                <div class="message-box p-6">
-                    <div class="text-4xl text-pink-600 mb-4">
-                        <i class="fas fa-hand-holding-heart"></i>
-                    </div>
-                    <h3 class="text-2xl font-semibold mb-2 text-pink-800">Your Support</h3>
-                    <p class="text-pink-700">You're always there for me when I need you.</p>
-                </div>
-                
-                <div class="message-box p-6">
-                    <div class="text-4xl text-pink-600 mb-4">
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <h3 class="text-2xl font-semibold mb-2 text-pink-800">Your Uniqueness</h3>
-                    <p class="text-pink-700">There's no one in this world quite like you.</p>
-                </div>
-                
-                <div class="message-box p-6">
-                    <div class="text-4xl text-pink-600 mb-4">
-                        <i class="fas fa-infinity"></i>
-                    </div>
-                    <h3 class="text-2xl font-semibold mb-2 text-pink-800">Everything About You</h3>
-                    <p class="text-pink-700">I love every little thing that makes you, you.</p>
-                </div>
-            </div>
-            
-            <div class="text-center mt-12">
-                <button id="more-reasons" class="cute-button px-8 py-3 bg-pink-500 text-white rounded-full font-semibold hover:bg-pink-600">
-                    Show Me More Reasons <i class="fas fa-heart ml-2"></i>
-                </button>
             </div>
         </section>
         
         <!-- Memories section -->
-        <section id="memories" class="py-32">
-            <h2 class="text-4xl font-bold text-center mb-16 text-pink-600 handwriting">
-                Our Special Memories ✨
-            </h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl message-box">
-                    <div class="h-48 bg-pink-300 overflow-hidden">
-                        <!-- Replace with your memory photo -->
-                        <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Memory 1">
-                    </div>
-                    <div class="p-6">
-                        <div class="text-pink-500 text-xl mb-2">
-                            <i class="fas fa-calendar-heart"></i> First Date
-                        </div>
-                        <p class="text-pink-700">That magical day when our story began. I was so nervous but you made everything feel so right.</p>
-                    </div>
-                </div>
-                
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl message-box">
-                    <div class="h-48 bg-pink-300 overflow-hidden">
-                        <!-- Replace with your memory photo -->
-                        <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Memory 2">
-                    </div>
-                    <div class="p-6">
-                        <div class="text-pink-500 text-xl mb-2">
-                            <i class="fas fa-umbrella-beach"></i> Beach Day
-                        </div>
-                        <p class="text-pink-700">Watching the sunset together, your hair blowing in the ocean breeze - pure perfection.</p>
-                    </div>
-                </div>
-                
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl message-box">
-                    <div class="h-48 bg-pink-300 overflow-hidden">
-                        <!-- Replace with your memory photo -->
-                        <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1527529420839-02f754af6d52?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Memory 3">
-                    </div>
-                    <div class="p-6">
-                        <div class="text-pink-500 text-xl mb-2">
-                            <i class="fas fa-birthday-cake"></i> Your Birthday
-                        </div>
-                        <p class="text-pink-700">Seeing your face light up when you saw the surprise I planned for you was everything.</p>
-                    </div>
-                </div>
-                
-                <div class="bg-white rounded-2xl overflow-hidden shadow-xl message-box">
-                    <div class="h-48 bg-pink-300 overflow-hidden">
-                        <!-- Replace with your memory photo -->
-                        <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Memory 4">
-                    </div>
-                    <div class="p-6">
-                        <div class="text-pink-500 text-xl mb-2">
-                            <i class="fas fa-film"></i> Movie Nights
-                        </div>
-                        <p class="text-pink-700">Cuddling up together, your head on my shoulder - it doesn't get better than this.</p>
-                    </div>
-                </div>
+        <section id="memories" class="py-24 bg-gradient-to-t from-pink-50 to-white">
+            <div class="flex justify-between items-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-pink-600 handwriting">
+                    Our Special Memories ✨
+                </h2>
+                <button id="add-memory-btn" class="cute-button px-6 py-2 bg-pink-500 text-white rounded-full font-semibold hover:bg-pink-600">
+                    Add Memory <i class="fas fa-plus ml-2"></i>
+                </button>
             </div>
             
-            <div class="relative mt-16 h-32">
-                <div class="absolute left-0 right-0 flex justify-center">
-                    <div class="w-64 h-64 rounded-full bg-pink-200 opacity-40"></div>
+            <div id="memories-container" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <!-- Memories will be dynamically added here -->
+            </div>
+            
+            <div class="relative mt-12 h-32">
+                <div class="absolute inset-0 flex justify-center">
+                    <div class="w-64 h-64 rounded-full bg-pink-200 opacity-30"></div>
                 </div>
-                <div class="absolute left-0 right-0 flex justify-center items-center h-full">
-                    <div class="text-center z-10">
-                        <p class="text-xl md:text-2xl text-pink-600 handwriting">
-                            Every moment with you becomes my favorite memory ❤️
-                        </p>
-                    </div>
+                <div class="absolute inset-0 flex justify-center items-center">
+                    <p class="text-lg md:text-xl text-pink-600 handwriting z-10">
+                        Every moment with you becomes my favorite memory ❤️
+                    </p>
                 </div>
             </div>
         </section>
         
         <!-- Message section -->
-        <section id="message" class="py-32">
+        <section id="message" class="py-24">
             <div class="max-w-2xl mx-auto text-center">
                 <div class="relative">
                     <div class="absolute -inset-4 bg-pink-200 rounded-3xl blur opacity-75"></div>
-                    <div class="relative bg-white rounded-2xl p-8 md:p-12 shadow-xl message-box">
-                        <h2 class="text-3xl md:text-4xl font-bold mb-6 text-pink-600 handwriting">
+                    <div class="relative bg-white rounded-2xl p-6 md:p-10 shadow-xl message-box">
+                        <h2 class="text-2xl md:text-3xl font-bold mb-6 text-pink-600 handwriting">
                             To My Love ❤️
                         </h2>
-                        
-                        <div class="text-lg md:text-xl text-pink-700 mb-6 text-left handwriting" style="line-height: 1.8;">
+                        <div class="text-base md:text-lg text-pink-700 mb-6 text-left handwriting" style="line-height: 1.8;">
                             <p class="mb-4">My Dearest,</p>
                             <p class="mb-4">From the moment I met you, I knew there was something special about you. You've brought so much joy, laughter, and love into my life that I can't imagine my world without you in it.</p>
                             <p class="mb-4">Your smile brightens my darkest days, your laugh is my favorite melody, and your love is the greatest gift I've ever received.</p>
                             <p class="mb-4">I promise to cherish you, support you, and love you more each day than the day before. You're my everything.</p>
                             <p>Forever yours,</p>
                         </div>
-                        
-                        <div class="mt-8">
-                            <div class="inline-block heart-beat text-4xl">
-                                <i class="fas fa-heart text-pink-500"></i>
-                                <i class="fas fa-heart text-pink-500"></i>
-                                <i class="fas fa-heart text-pink-500"></i>
-                            </div>
+                        <div class="mt-8 heart-beat">
+                            <i class="fas fa-heart text-pink-500 text-3xl mx-1"></i>
+                            <i class="fas fa-heart text-pink-500 text-3xl mx-1"></i>
+                            <i class="fas fa-heart text-pink-500 text-3xl mx-1"></i>
                         </div>
                     </div>
                 </div>
-                
-                <div class="mt-16">
+                <div class="mt-12">
                     <button id="secret-button" class="cute-button px-8 py-3 bg-pink-500 text-white rounded-full font-semibold hover:bg-pink-600">
                         Click for a Sweet Surprise <i class="fas fa-gift ml-2"></i>
                     </button>
                 </div>
             </div>
         </section>
+        
+        <!-- Future Together Section -->
+        <section id="future" class="py-24 bg-gradient-to-b from-pink-50 to-pink-100">
+            <div class="max-w-5xl mx-auto px-4">
+                <div class="flex justify-between items-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-center text-pink-600 handwriting">
+                        Our Beautiful Future 🌈
+                    </h2>
+                    <button id="add-dream-btn" class="cute-button px-6 py-2 bg-pink-500 text-white rounded-full font-semibold hover:bg-pink-600">
+                        Add Dream <i class="fas fa-plus ml-2"></i>
+                    </button>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-6 text-pink-700">Dreams We'll Share</h3>
+                        <ul id="dreams-container" class="space-y-3 text-pink-600">
+                            <!-- Dreams will be dynamically added here -->
+                        </ul>
+                    </div>
+                    <div class="overflow-hidden rounded-xl shadow-xl">
+                        <img src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" 
+                             alt="Future together" class="w-full h-auto object-cover transform hover:scale-105 transition duration-500" loading="lazy">
+                    </div>
+                </div>
+                <div class="mt-16 text-center">
+                    <p class="text-lg text-pink-600 handwriting max-w-2xl mx-auto">
+                        "I can't wait to experience every sunrise and sunset with you by my side."
+                    </p>
+                </div>
+            </div>
+        </section>
     </div>
     
-    <!-- Future Together Section -->
-    <section id="future" class="py-32 bg-pink-50">
-        <div class="max-w-5xl mx-auto px-4">
-            <h2 class="text-4xl font-bold text-center mb-16 text-pink-600 handwriting">
-                Our Beautiful Future 🌈
-            </h2>
-            
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div>
-                    <h3 class="text-2xl font-semibold mb-6 text-pink-700">Dreams We'll Share</h3>
-                    <ul class="space-y-4 text-pink-600">
-                        <li class="flex items-start"><i class="fas fa-heart text-pink-500 mt-1 mr-3"></i> Building a home filled with love and laughter</li>
-                        <li class="flex items-start"><i class="fas fa-heart text-pink-500 mt-1 mr-3"></i> Traveling the world hand in hand</li>
-                        <li class="flex items-start"><i class="fas fa-heart text-pink-500 mt-1 mr-3"></i> Growing together through life's adventures</li>
-                        <li class="flex items-start"><i class="fas fa-heart text-pink-500 mt-1 mr-3"></i> Creating traditions that become our legacy</li>
-                        <li class="flex items-start"><i class="fas fa-heart text-pink-500 mt-1 mr-3"></i> Falling more in love with each passing year</li>
-                    </ul>
-                </div>
-                <div class="overflow-hidden rounded-xl shadow-xl">
-                    <img src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" 
-                         alt="Future together" class="w-full h-auto object-cover transform hover:scale-105 transition duration-500">
-                </div>
-            </div>
-            
-            <div class="mt-20 text-center">
-                <p class="text-xl text-pink-600 handwriting max-w-2xl mx-auto">
-                    "I can't wait to experience every sunrise and sunset with you by my side."
-                </p>
-            </div>
-        </div>
-    </section>
-    
     <!-- Footer -->
-    <footer class="py-8 text-center bg-pink-50">
+    <footer class="py-8 text-center bg-pink-100">
         <div class="container mx-auto px-4">
             <p class="text-pink-600">Made with <i class="fas fa-heart text-pink-500 heart-beat"></i> just for you</p>
             <div class="mt-4 flex justify-center space-x-4">
@@ -391,34 +393,329 @@
         </div>
     </footer>
     
-    <!-- Floating hearts -->
-    <div id="floating-hearts"></div>
+    <!-- Back to Top Button -->
+    <a href="#home" id="back-to-top" class="cute-button bg-pink-500 text-white p-3 rounded-full shadow-lg hover:bg-pink-600">
+        <i class="fas fa-arrow-up"></i>
+    </a>
     
+    <!-- Floating hearts -->
+    <div id="floating-hearts" class="fixed inset-0"></div>
+    
+    <!-- Modals -->
+    <div id="reason-modal" class="modal">
+        <div class="modal-content message-box">
+            <span class="modal-close text-pink-500 text-xl">×</span>
+            <h2 class="text-2xl font-bold text-pink-600 handwriting mb-4">Add/Edit Reason</h2>
+            <input id="reason-title" type="text" class="w-full p-2 mb-4 border rounded" placeholder="Reason Title" required>
+            <textarea id="reason-description" class="w-full p-2 mb-4 border rounded" placeholder="Reason Description" required></textarea>
+            <input id="reason-icon" type="text" class="w-full p-2 mb-4 border rounded" placeholder="Font Awesome Icon (e.g., fas fa-heart)">
+            <div class="flex justify-end space-x-2">
+                <button id="save-reason" class="cute-button px-6 py-2 bg-pink-500 text-white rounded-full disabled-btn" disabled>Save</button>
+                <button class="modal-close cute-button px-6 py-2 bg-gray-400 text-white rounded-full">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="memory-modal" class="modal">
+        <div class="modal-content message-box">
+            <span class="modal-close text-pink-500 text-xl">×</span>
+            <h2 class="text-2xl font-bold text-pink-600 handwriting mb-4">Add/Edit Memory</h2>
+            <input id="memory-title" type="text" class="w-full p-2 mb-4 border rounded" placeholder="Memory Title" required>
+            <textarea id="memory-description" class="w-full p-2 mb-4 border rounded" placeholder="Memory Description" required></textarea>
+            <input id="memory-image" type="text" class="w-full p-2 mb-4 border rounded" placeholder="Image URL" required>
+            <input id="memory-icon" type="text" class="w-full p-2 mb-4 border rounded" placeholder="Font Awesome Icon (e.g., fas fa-calendar-heart)">
+            <div class="flex justify-end space-x-2">
+                <button id="save-memory" class="cute-button px-6 py-2 bg-pink-500 text-white rounded-full disabled-btn" disabled>Save</button>
+                <button class="modal-close cute-button px-6 py-2 bg-gray-400 text-white rounded-full">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="dream-modal" class="modal">
+        <div class="modal-content message-box">
+            <span class="modal-close text-pink-500 text-xl">×</span>
+            <h2 class="text-2xl font-bold text-pink-600 handwriting mb-4">Add/Edit Dream</h2>
+            <input id="dream-description" type="text" class="w-full p-2 mb-4 border rounded" placeholder="Dream Description" required>
+            <div class="flex justify-end space-x-2">
+                <button id="save-dream" class="cute-button px-6 py-2 bg-pink-500 text-white rounded-full disabled-btn" disabled>Save</button>
+                <button class="modal-close cute-button px-6 py-2 bg-gray-400 text-white rounded-full">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Data storage
+        let reasons = JSON.parse(localStorage.getItem('reasons')) || [
+            { id: '1', title: 'Your Beautiful Smile', description: 'Just seeing you smile brightens my whole day.', icon: 'fas fa-smile-beam' },
+            { id: '2', title: 'Your Kind Heart', description: 'You\'re the most caring person I\'ve ever known.', icon: 'fas fa-heart' },
+            { id: '3', title: 'Your Sense of Humor', description: 'You always know how to make me laugh.', icon: 'fas fa-laugh-squint' },
+            { id: '4', title: 'Your Support', description: 'You\'re always there for me when I need you.', icon: 'fas fa-hand-holding-heart' },
+            { id: '5', title: 'Your Uniqueness', description: 'There\'s no one in this world quite like you.', icon: 'fas fa-star' },
+            { id: '6', title: 'Everything About You', description: 'I love every little thing that makes you, you.', icon: 'fas fa-infinity' }
+        ];
+
+        let memories = JSON.parse(localStorage.getItem('memories')) || [
+            { id: '1', title: 'First Date', description: 'That magical day when our story began. I was so nervous but you made everything feel so right.', image: 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60', icon: 'fas fa-calendar-heart' },
+            { id: '2', title: 'Beach Day', description: 'Watching the sunset together, your hair blowing in the ocean breeze - pure perfection.', image: 'https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60', icon: 'fas fa-umbrella-beach' },
+            { id: '3', title: 'Your Birthday', description: 'Seeing your face light up when you saw the surprise I planned for you was everything.', image: 'https://images.unsplash.com/photo-1527529420839-02f754af6d52?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60', icon: 'fas fa-birthday-cake' },
+            { id: '4', title: 'Movie Nights', description: 'Cuddling up together, your head on my shoulder - it doesn\'t get better than this.', image: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60', icon: 'fas fa-film' }
+        ];
+
+        let dreams = JSON.parse(localStorage.getItem('dreams')) || [
+            { id: '1', description: 'Building a home filled with love and laughter' },
+            { id: '2', description: 'Traveling the world hand in hand' },
+            { id: '3', description: 'Growing together through life\'s adventures' },
+            { id: '4', description: 'Creating traditions that become our legacy' },
+            { id: '5', description: 'Falling more in love with each passing year' }
+        ];
+
+        // Generate UUID
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        // Render functions
+        function renderReasons() {
+            const container = document.getElementById('reasons-container');
+            container.innerHTML = '';
+            reasons.forEach(reason => {
+                const div = document.createElement('div');
+                div.className = 'message-box p-6';
+                div.innerHTML = `
+                    <div class="text-4xl text-pink-600 mb-4">
+                        <i class="${reason.icon}"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 text-pink-800">${reason.title}</h3>
+                    <p class="text-pink-700 text-sm">${reason.description}</p>
+                    <div class="mt-4 flex justify-end space-x-2">
+                        <button class="edit-reason cute-button px-4 py-1 bg-pink-400 text-white rounded-full" data-id="${reason.id}">Edit</button>
+                        <button class="delete-reason cute-button px-4 py-1 bg-red-400 text-white rounded-full" data-id="${reason.id}">Delete</button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function renderMemories() {
+            const container = document.getElementById('memories-container');
+            container.innerHTML = '';
+            memories.forEach(memory => {
+                const div = document.createElement('div');
+                div.className = 'bg-white rounded-2xl overflow-hidden shadow-xl message-box hover:scale-105 transition-transform duration-300';
+                div.innerHTML = `
+                    <div class="h-48 overflow-hidden">
+                        <img class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500" src="${memory.image}" alt="${memory.title}" loading="lazy">
+                    </div>
+                    <div class="p-6">
+                        <div class="text-pink-500 text-lg mb-2">
+                            <i class="${memory.icon}"></i> ${memory.title}
+                        </div>
+                        <p class="text-pink-700 text-sm">${memory.description}</p>
+                        <div class="mt-4 flex justify-end space-x-2">
+                            <button class="edit-memory cute-button px-4 py-1 bg-pink-400 text-white rounded-full" data-id="${memory.id}">Edit</button>
+                            <button class="delete-memory cute-button px-4 py-1 bg-red-400 text-white rounded-full" data-id="${memory.id}">Delete</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function renderDreams() {
+            const container = document.getElementById('dreams-container');
+            container.innerHTML = '';
+            dreams.forEach(dream => {
+                const li = document.createElement('li');
+                li.className = 'flex items-start';
+                li.innerHTML = `
+                    <i class="fas fa-heart text-pink-500 mt-1 mr-3"></i>
+                    ${dream.description}
+                    <div class="ml-auto space-x-2">
+                        <button class="edit-dream cute-button px-2 py-1 bg-pink-400 text-white rounded-full text-sm" data-id="${dream.id}">Edit</button>
+                        <button class="delete-dream cute-button px-2 py-1 bg-red-400 text-white rounded-full text-sm" data-id="${dream.id}">Delete</button>
+                    </div>
+                `;
+                container.appendChild(li);
+            });
+        }
+
+        // Modal handling
+        function openModal(modalId, data = {}, isEdit = false) {
+            console.log(`Opening modal: ${modalId}`);
+            const modal = document.getElementById(modalId);
+            modal.style.display = 'flex';
+            if (modalId === 'reason-modal') {
+                document.getElementById('reason-title').value = data.title || '';
+                document.getElementById('reason-description').value = data.description || '';
+                document.getElementById('reason-icon').value = data.icon || '';
+                document.getElementById('save-reason').dataset.id = isEdit ? data.id : '';
+            } else if (modalId === 'memory-modal') {
+                document.getElementById('memory-title').value = data.title || '';
+                document.getElementById('memory-description').value = data.description || '';
+                document.getElementById('memory-image').value = data.image || '';
+                document.getElementById('memory-icon').value = data.icon || '';
+                document.getElementById('save-memory').dataset.id = isEdit ? data.id : '';
+            } else if (modalId === 'dream-modal') {
+                document.getElementById('dream-description').value = data.description || '';
+                document.getElementById('save-dream').dataset.id = isEdit ? data.id : '';
+            }
+            updateSaveButtonState(modalId);
+        }
+
+        function closeModal(modalId) {
+            console.log(`Closing modal: ${modalId}`);
+            const modal = document.getElementById(modalId);
+            modal.style.display = 'none';
+            if (modalId === 'reason-modal') {
+                document.getElementById('reason-title').value = '';
+                document.getElementById('reason-description').value = '';
+                document.getElementById('reason-icon').value = '';
+                document.getElementById('save-reason').dataset.id = '';
+            } else if (modalId === 'memory-modal') {
+                document.getElementById('memory-title').value = '';
+                document.getElementById('memory-description').value = '';
+                document.getElementById('memory-image').value = '';
+                document.getElementById('memory-icon').value = '';
+                document.getElementById('save-memory').dataset.id = '';
+            } else if (modalId === 'dream-modal') {
+                document.getElementById('dream-description').value = '';
+                document.getElementById('save-dream').dataset.id = '';
+            }
+        }
+
+        // Validate inputs and update save button state
+        function updateSaveButtonState(modalId) {
+            if (modalId === 'reason-modal') {
+                const title = document.getElementById('reason-title').value.trim();
+                const description = document.getElementById('reason-description').value.trim();
+                const saveBtn = document.getElementById('save-reason');
+                saveBtn.disabled = !title || !description;
+                saveBtn.classList.toggle('disabled-btn', saveBtn.disabled);
+            } else if (modalId === 'memory-modal') {
+                const title = document.getElementById('memory-title').value.trim();
+                const description = document.getElementById('memory-description').value.trim();
+                const image = document.getElementById('memory-image').value.trim();
+                const saveBtn = document.getElementById('save-memory');
+                saveBtn.disabled = !title || !description || !image;
+                saveBtn.classList.toggle('disabled-btn', saveBtn.disabled);
+            } else if (modalId === 'dream-modal') {
+                const description = document.getElementById('dream-description').value.trim();
+                const saveBtn = document.getElementById('save-dream');
+                saveBtn.disabled = !description;
+                saveBtn.classList.toggle('disabled-btn', saveBtn.disabled);
+            }
+        }
+
+        // Save data
+        function saveReason() {
+            console.log('Saving reason');
+            const id = document.getElementById('save-reason').dataset.id;
+            const reason = {
+                id: id || generateUUID(),
+                title: document.getElementById('reason-title').value.trim(),
+                description: document.getElementById('reason-description').value.trim(),
+                icon: document.getElementById('reason-icon').value.trim() || 'fas fa-heart'
+            };
+            if (id) {
+                const index = reasons.findIndex(r => r.id === id);
+                reasons[index] = reason;
+            } else {
+                reasons.push(reason);
+            }
+            localStorage.setItem('reasons', JSON.stringify(reasons));
+            renderReasons();
+            closeModal('reason-modal');
+        }
+
+        function saveMemory() {
+            console.log('Saving memory');
+            const id = document.getElementById('save-memory').dataset.id;
+            const memory = {
+                id: id || generateUUID(),
+                title: document.getElementById('memory-title').value.trim(),
+                description: document.getElementById('memory-description').value.trim(),
+                image: document.getElementById('memory-image').value.trim(),
+                icon: document.getElementById('memory-icon').value.trim() || 'fas fa-heart'
+            };
+            if (id) {
+                const index = memories.findIndex(m => m.id === id);
+                memories[index] = memory;
+            } else {
+                memories.push(memory);
+            }
+            localStorage.setItem('memories', JSON.stringify(memories));
+            renderMemories();
+            closeModal('memory-modal');
+        }
+
+        function saveDream() {
+            console.log('Saving dream');
+            const id = document.getElementById('save-dream').dataset.id;
+            const dream = {
+                id: id || generateUUID(),
+                description: document.getElementById('dream-description').value.trim()
+            };
+            if (id) {
+                const index = dreams.findIndex(d => d.id === id);
+                dreams[index] = dream;
+            } else {
+                dreams.push(dream);
+            }
+            localStorage.setItem('dreams', JSON.stringify(dreams));
+            renderDreams();
+            closeModal('dream-modal');
+        }
+
+        // Delete data
+        function deleteReason(id) {
+            console.log(`Deleting reason: ${id}`);
+            if (confirm('Are you sure you want to delete this reason?')) {
+                reasons = reasons.filter(r => r.id !== id);
+                localStorage.setItem('reasons', JSON.stringify(reasons));
+                renderReasons();
+            }
+        }
+
+        function deleteMemory(id) {
+            console.log(`Deleting memory: ${id}`);
+            if (confirm('Are you sure you want to delete this memory?')) {
+                memories = memories.filter(m => m.id !== id);
+                localStorage.setItem('memories', JSON.stringify(memories));
+                renderMemories();
+            }
+        }
+
+        function deleteDream(id) {
+            console.log(`Deleting dream: ${id}`);
+            if (confirm('Are you sure you want to delete this dream?')) {
+                dreams = dreams.filter(d => d.id !== id);
+                localStorage.setItem('dreams', JSON.stringify(dreams));
+                renderDreams();
+            }
+        }
+
         // Bubbles effect
         function createBubbles() {
             const bubblesContainer = document.getElementById('bubbles-container');
-            const numBubbles = 20;
+            const numBubbles = 30;
             
             for (let i = 0; i < numBubbles; i++) {
                 const bubble = document.createElement('div');
                 bubble.classList.add('bubble');
                 
-                // Random size between 10 and 40px
-                const size = Math.random() * 30 + 10;
+                const size = Math.random() * 40 + 10;
                 bubble.style.width = `${size}px`;
                 bubble.style.height = `${size}px`;
                 
-                // Random position
                 bubble.style.left = `${Math.random() * 100}vw`;
                 bubble.style.top = `${Math.random() * 100}vh`;
                 
-                // Random animation duration between 5 and 15s
-                const duration = Math.random() * 10 + 5;
+                const duration = Math.random() * 8 + 4;
                 bubble.style.animation = `float-up ${duration}s linear infinite`;
-                
-                // Random delay
-                bubble.style.animationDelay = `${Math.random() * 5}s`;
+                bubble.style.animationDelay = `${Math.random() * 3}s`;
                 
                 bubblesContainer.appendChild(bubble);
             }
@@ -432,28 +729,25 @@
             setInterval(() => {
                 const heart = document.createElement('div');
                 heart.innerHTML = '❤️';
-                heart.style.position = 'fixed';
+                heart.style.position = 'absolute';
                 heart.style.fontSize = `${Math.random() * 20 + 10}px`;
                 heart.style.color = colors[Math.floor(Math.random() * colors.length)];
                 heart.style.left = `${Math.random() * 100}vw`;
                 heart.style.bottom = '-50px';
                 heart.style.transform = `rotate(${Math.random() * 60 - 30}deg)`;
-                heart.style.zIndex = '0';
-                heart.style.opacity = '0.8';
-                heart.style.animation = `float-up ${Math.random() * 5 + 5}s linear forwards`;
+                heart.style.opacity = '0.7';
+                heart.style.animation = `float-up ${Math.random() * 5 + 4}s linear forwards`;
                 
                 container.appendChild(heart);
                 
-                // Remove heart after animation completes
-                setTimeout(() => {
-                    heart.remove();
-                }, 10000);
-            }, 300);
+                setTimeout(() => heart.remove(), 9000);
+            }, 400);
         }
-        
+
         // More reasons button
-        document.getElementById('more-reasons').addEventListener('click', function() {
-            const reasons = [
+        function showMoreReasons() {
+            console.log('More reasons button clicked');
+            const reasonsList = [
                 "The way your eyes sparkle when you're happy",
                 "How you always know what to say to make me feel better",
                 "Your intelligence and the way you see the world",
@@ -466,11 +760,10 @@
                 "How you make even ordinary moments feel special"
             ];
             
-            // Create a sweet alert with random reasons
-            const randomReason = reasons[Math.floor(Math.random() * reasons.length)];
+            const randomReason = reasonsList[Math.floor(Math.random() * reasonsList.length)];
             
             const customAlert = document.createElement('div');
-            customAlert.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl shadow-2xl z-50 p-6 max-w-sm w-full mx-4';
+            customAlert.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl shadow-2xl z-6000 p-6 max-w-sm w-full mx-4 message-box';
             customAlert.innerHTML = `
                 <div class="text-center">
                     <div class="text-4xl mb-4 text-pink-500">
@@ -478,7 +771,7 @@
                     </div>
                     <h3 class="text-xl font-semibold mb-2 text-pink-600">Another Reason...</h3>
                     <p class="text-pink-700 mb-4">${randomReason}</p>
-                    <button class="cute-button px-6 py-2 bg-pink-500 text-white rounded-full font-medium hover:bg-pink-600 close-reason">
+                    <button class="cute-button px-6 py-2 bg-pink-500 text-white rounded-full close-reason">
                         OK <i class="fas fa-heart ml-1"></i>
                     </button>
                 </div>
@@ -486,20 +779,28 @@
             
             document.body.appendChild(customAlert);
             
-            // Add backdrop
             const backdrop = document.createElement('div');
-            backdrop.className = 'fixed inset-0 bg-black bg-opacity-30 z-40';
+            backdrop.className = 'fixed inset-0 bg-black bg-opacity-30 z-5500';
             document.body.appendChild(backdrop);
             
-            // Close button
             customAlert.querySelector('.close-reason').addEventListener('click', function() {
+                console.log('Closing more reasons popup');
                 customAlert.remove();
                 backdrop.remove();
             });
-        });
-        
+            
+            setTimeout(() => {
+                if (customAlert.parentNode) {
+                    console.log('Auto-closing more reasons popup');
+                    customAlert.remove();
+                    backdrop.remove();
+                }
+            }, 5000);
+        }
+
         // Secret message button
-        document.getElementById('secret-button').addEventListener('click', function() {
+        function showSecretMessage() {
+            console.log('Secret button clicked');
             const secretMessages = [
                 "You're the most beautiful girl in the world to me!",
                 "I fall more in love with you every day.",
@@ -514,16 +815,15 @@
             
             const randomMessage = secretMessages[Math.floor(Math.random() * secretMessages.length)];
             
-            // Create a cute popup
             const popup = document.createElement('div');
-            popup.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-3xl shadow-2xl z-50 p-8 max-w-sm w-full message-box border-4 border-pink-200 animate-bounce';
+            popup.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-3xl shadow-2xl z-6000 p-8 max-w-sm w-full message-box animate-bounce';
             popup.innerHTML = `
                 <div class="text-center">
                     <div class="text-5xl mb-4 text-pink-500">
                         <i class="fas fa-heart"></i>
                     </div>
                     <p class="text-pink-600 text-xl handwriting">${randomMessage}</p>
-                    <button class="mt-4 px-5 py-2 bg-pink-500 text-white rounded-full font-medium hover:bg-pink-600 close-popup">
+                    <button class="mt-4 px-5 py-2 bg-pink-500 text-white rounded-full close-popup">
                         Close <i class="fas fa-times ml-1"></i>
                     </button>
                 </div>
@@ -531,48 +831,140 @@
             
             document.body.appendChild(popup);
             
-            // Add backdrop
             const backdrop = document.createElement('div');
-            backdrop.className = 'fixed inset-0 bg-black bg-opacity-30 z-40';
+            backdrop.className = 'fixed inset-0 bg-black bg-opacity-30 z-5500';
             document.body.appendChild(backdrop);
             
-            // Close button
             popup.querySelector('.close-popup').addEventListener('click', function() {
+                console.log('Closing secret message popup');
                 popup.remove();
                 backdrop.remove();
             });
             
-            // Auto close after 5 seconds
             setTimeout(() => {
                 if (popup.parentNode) {
+                    console.log('Auto-closing secret message popup');
                     popup.remove();
                     backdrop.remove();
                 }
             }, 5000);
-        });
+        }
         
-        // Smooth scrolling for navigation
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
+        // Smooth scrolling
+        function initSmoothScroll() {
+            document.querySelectorAll('.nav-link').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    console.log(`Nav link clicked: ${this.getAttribute('href')}`);
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            const backToTop = document.getElementById('back-to-top');
+            backToTop.addEventListener('click', function(e) {
+                console.log('Back to top clicked');
                 e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                
                 window.scrollTo({
-                    top: targetElement.offsetTop - 80,
+                    top: 0,
                     behavior: 'smooth'
                 });
             });
-        });
+            
+            window.addEventListener('scroll', () => {
+                backToTop.classList.toggle('visible', window.scrollY > 300);
+            });
+        }
         
-        // Initialize effects when page loads
+        // Initialize
         window.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing...');
+            // Hide loader
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                loader.classList.add('loader-hidden');
+            }, 1000);
+            
             createBubbles();
             createFloatingHearts();
-            
-            // Replace photo with your actual photo
-            // document.getElementById('your-photo').src = "your-photo.jpg";
+            initSmoothScroll();
+            renderReasons();
+            renderMemories();
+            renderDreams();
+
+            // Button event listeners
+            try {
+                document.getElementById('more-reasons').addEventListener('click', showMoreReasons);
+                document.getElementById('secret-button').addEventListener('click', showSecretMessage);
+                document.getElementById('add-reason-btn').addEventListener('click', () => openModal('reason-modal'));
+                document.getElementById('add-memory-btn').addEventListener('click', () => openModal('memory-modal'));
+                document.getElementById('add-dream-btn').addEventListener('click', () => openModal('dream-modal'));
+
+                document.querySelectorAll('.modal-close').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        console.log('Modal close button clicked');
+                        closeModal(btn.closest('.modal').id);
+                    });
+                });
+
+                document.getElementById('save-reason').addEventListener('click', saveReason);
+                document.getElementById('save-memory').addEventListener('click', saveMemory);
+                document.getElementById('save-dream').addEventListener('click', saveDream);
+
+                ['reason-title', 'reason-description', 'reason-icon'].forEach(id => {
+                    const input = document.getElementById(id);
+                    if (input) input.addEventListener('input', () => updateSaveButtonState('reason-modal'));
+                });
+                ['memory-title', 'memory-description', 'memory-image', 'memory-icon'].forEach(id => {
+                    const input = document.getElementById(id);
+                    if (input) input.addEventListener('input', () => updateSaveButtonState('memory-modal'));
+                });
+                document.getElementById('dream-description').addEventListener('input', () => updateSaveButtonState('dream-modal'));
+
+                document.getElementById('reasons-container').addEventListener('click', e => {
+                    if (e.target.classList.contains('edit-reason')) {
+                        console.log(`Edit reason clicked: ${e.target.dataset.id}`);
+                        const id = e.target.dataset.id;
+                        const reason = reasons.find(r => r.id === id);
+                        openModal('reason-modal', reason, true);
+                    } else if (e.target.classList.contains('delete-reason')) {
+                        console.log(`Delete reason clicked: ${e.target.dataset.id}`);
+                        deleteReason(e.target.dataset.id);
+                    }
+                });
+
+                document.getElementById('memories-container').addEventListener('click', e => {
+                    if (e.target.classList.contains('edit-memory')) {
+                        console.log(`Edit memory clicked: ${e.target.dataset.id}`);
+                        const id = e.target.dataset.id;
+                        const memory = memories.find(m => m.id === id);
+                        openModal('memory-modal', memory, true);
+                    } else if (e.target.classList.contains('delete-memory')) {
+                        console.log(`Delete memory clicked: ${e.target.dataset.id}`);
+                        deleteMemory(e.target.dataset.id);
+                    }
+                });
+
+                document.getElementById('dreams-container').addEventListener('click', e => {
+                    if (e.target.classList.contains('edit-dream')) {
+                        console.log(`Edit dream clicked: ${e.target.dataset.id}`);
+                        const id = e.target.dataset.id;
+                        const dream = dreams.find(d => d.id === id);
+                        openModal('dream-modal', dream, true);
+                    } else if (e.target.classList.contains('delete-dream')) {
+                        console.log(`Delete dream clicked: ${e.target.dataset.id}`);
+                        deleteDream(e.target.dataset.id);
+                    }
+                });
+            } catch (error) {
+                console.error('Error setting up event listeners:', error);
+            }
         });
     </script>
 </body>
